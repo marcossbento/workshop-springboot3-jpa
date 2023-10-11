@@ -3,7 +3,6 @@ package com.marcossbento.webServicesProject.services;
 import com.marcossbento.webServicesProject.entities.User;
 import com.marcossbento.webServicesProject.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
