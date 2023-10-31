@@ -2,8 +2,11 @@ package com.marcossbento.webServicesProject.services;
 
 import com.marcossbento.webServicesProject.entities.User;
 import com.marcossbento.webServicesProject.repositories.UserRepository;
+import com.marcossbento.webServicesProject.services.exceptions.DatabaseExcepiton;
 import com.marcossbento.webServicesProject.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +32,17 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        try {
+            if(!repository.existsById(id)) {
+                throw new ResourceNotFoundException(id);
+            } else {
+                repository.deleteById(id);
+            }
+        } catch (ResourceNotFoundException e){
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseExcepiton(e.getMessage());
+        }
     }
 
     public User update(Long id, User obj) {
